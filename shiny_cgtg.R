@@ -67,21 +67,28 @@ server <- function(input, output) {
     
     # result text
     if (result$p.value <= max_p_value)  {
-      result_txt <- paste ("significant, p value =", round(result$p.value,2))         
+      result_txt <- paste ("significant, p value =", round(result$p.value,2))
+      result_col <- "darkgreen"
     } else  {
       result_txt <- paste ("not significant, p value =", round(result$p.value,2))           
+      result_col <- "red"
     }
     
     # define names
     tg_name <- paste0("target group\nsize=",targetgroup_count," ,resp=",targetgroup_response)
     cg_name <- paste0("control group\nsize=",controlgroup_count," ,resp=",controlgroup_response)
-    title_name <- paste0("response in %\ndifference ", result_txt)
+    title_name <- paste0("response in %\ntarget group vs control group")
+    subtitle_name <- paste0("difference ", result_txt)
     
     # plot
+    par(col.main = "black")
+    par(col.sub = result_col)
+    par(cex.sub = 1.5)
     b<-barplot(c(targetgroup_response/targetgroup_count*100,controlgroup_response/controlgroup_count*100), 
-               names.arg=c(tg_name,cg_name),
-               main=title_name,
-               col="grey",
+               names.arg = c(tg_name,cg_name),
+               main = title_name,
+               sub = subtitle_name, 
+               col = "grey",
                border = FALSE,
                ylim = c(0, max(targetgroup_response_pct, controlgroup_response_pct)*100*1.3)
     )
